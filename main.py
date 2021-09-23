@@ -4,6 +4,14 @@ Created on 23-09-2021
 
 @author: Hirtih Kumar C V
 """
+import nltk
+
+def read(filename):
+    words = []
+    for file in filename:
+        with open(f'C:\\Users\\cvhir\\Documents\\GitHub\\Natural-Language-Processing\\stylometry-federalist\\data\\federalist_{file}.txt') as f:
+            words.append(f.read())
+    return ('\n'.join(words))
 
 #Initial driver function
 def main():
@@ -19,5 +27,37 @@ def main():
                 'Unknown':[49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 62, 63]
                 }
 
-if __name__ == "main":
+    #Dictionary to extract author's name and to read the respective files for analyzing
+    key_to_author_file = {}
+    
+    #List of author's name
+    authors = ()
+    temp_authors = list(authors)
+
+    #key -> author's name
+    #value -> array of numbers reffering to the file's index
+    for key, value in paper_files.items():
+        key_to_author_file[key] = read(value)
+        temp_authors.append(key)
+        authors = tuple(temp_authors)
+    
+    author_tokens = {}
+    length_distribution = {}
+
+    for author in authors:
+        tokens = nltk.word_tokenize(key_to_author_file[author])
+
+        #Filter only alphabets
+        author_tokens[author] = ([token for token in tokens if any(al.isalpha() for al in token)])
+
+        #Find the length of individual word
+        token_length = [len(token) for token in author_tokens[author]]
+
+        #Frequency denotes the number of times a word has occured
+        length_distribution[authors] = nltk.FreqDist(token_length)
+
+        length_distribution[authors].plot(15, title="Author writing comparision")
+    
+    
+if __name__ == "__main__":
     main()
