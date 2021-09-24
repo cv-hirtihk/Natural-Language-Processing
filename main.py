@@ -9,7 +9,7 @@ import nltk
 def read(filename):
     words = []
     for file in filename:
-        with open(f'C:\\Users\\cvhir\\Documents\\GitHub\\Natural-Language-Processing\\stylometry-federalist\\data\\federalist_{file}.txt') as f:
+        with open(f'C:\\Users\\cvhir\\Documents\\GitHub\\Natural-Language-Processing\\data\\federalist_{file}.txt') as f:
             words.append(f.read())
     return ('\n'.join(words))
 
