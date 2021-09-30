@@ -6,6 +6,7 @@ Created on 23-09-2021
 """
 import nltk
 
+#function to read value from .txt files
 def read(filename):
     words = []
     for file in filename:
@@ -15,7 +16,8 @@ def read(filename):
 
 #Initial driver function
 def main():
-    #Author's name and index of the file; Index starts from '1'
+    #Author's name and index of the file; Index for the file starts from '1'
+    #Author name and file's index are manually mentioned
     paper_files = {
                 'Madison':[10, 14, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48],
                 'Hamilton':[1, 6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 21, 22, 23, 24, 
@@ -26,38 +28,35 @@ def main():
                 'Shared':[18, 19, 20],
                 'Unknown':[49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 62, 63]
                 }
-
-    #Dictionary to extract author's name and to read the respective files for analyzing
-    key_to_author_file = {}
     
-    #List of author's name
+    #Tuple to store author's name
     authors = ()
     temp_authors = list(authors)
 
     #key -> author's name
     #value -> array of numbers reffering to the file's index
     for key, value in paper_files.items():
-        key_to_author_file[key] = read(value)
+        paper_files[key] = read(value)
         temp_authors.append(key)
         authors = tuple(temp_authors)
     
-    author_tokens = {}
     length_distribution = {}
 
     for author in authors:
-        tokens = nltk.word_tokenize(key_to_author_file[author])
-
+        #Using 'word_tokenize' to convert large data set (String) to smaller data set (individual words)
+        tokens = nltk.word_tokenize(paper_files[author])
+        
         #Filter only alphabets
-        author_tokens[author] = ([token for token in tokens if any(al.isalpha() for al in token)])
+        paper_files[author] = ([token for token in tokens if any(al.isalpha() for al in token)])
 
         #Find the length of individual word
-        token_length = [len(token) for token in author_tokens[author]]
+        token_length = [len(token) for token in paper_files[author]]
 
         #Frequency denotes the number of times a word has occured
         length_distribution[authors] = nltk.FreqDist(token_length)
 
         length_distribution[authors].plot(15, title="Author writing comparision")
     
-    
 if __name__ == "__main__":
+    #call the driver function
     main()
